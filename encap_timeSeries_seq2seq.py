@@ -33,11 +33,11 @@ def show_parameter():
       
     run function: seq2seq_running to train your model,
             in which you should pass:
-    model, X_test, y_test, lossfunction
+    grid, model, optimiser, lossfunction, X_train, y_train, X_test, y_test, teacher_forcing_ratio
     
     run function: seq2seq_evaluate to evaluate, 
             in which you should pass:
-    grid, model, optimiser, lossfunction, X_train, y_train, X_test, y_test, teacher_forcing_ratio
+    model, X_test, y_test, lossfunction
     '''
     )
 
