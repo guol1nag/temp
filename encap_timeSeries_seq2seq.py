@@ -10,22 +10,36 @@ import torch.optim as optim
 import random
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-''' parameters of this code
 
-param = {'max_epochs':3,
-        'learning_rate':1e-3,       
-        'clip':1,                  # clip grad norm
-        'teacher_forcing_ratio':1, # during training
-        'OUTPUT_DIM':1,
-        'ENC_EMB_DIM':21,
-        'ENC_HID_DIM':32,
-        'DEC_HID_DIM':32,
-        'ENC_DROPOUT':0,
-        'DEC_DROPOUT':0,
-        'device':device
-      }
+def show_parameter():
 
-'''
+    print(
+        ''' Hello:
+
+    run function: instan_things to instantiate your model, 
+            in which you should define the following dictionary parameters
+
+    param = {'max_epochs':3,
+            'learning_rate':1e-3,       
+            'clip':1,                  # clip grad norm
+            'teacher_forcing_ratio':1, # during training
+            'OUTPUT_DIM':1,
+            'ENC_EMB_DIM':21,
+            'ENC_HID_DIM':32,
+            'DEC_HID_DIM':32,
+            'ENC_DROPOUT':0,
+            'DEC_DROPOUT':0,
+            'device':device}
+      
+    run function: seq2seq_running to train your model,
+            in which you should pass:
+    model, X_test, y_test, lossfunction
+    
+    run function: seq2seq_evaluate to evaluate, 
+            in which you should pass:
+    grid, model, optimiser, lossfunction, X_train, y_train, X_test, y_test, teacher_forcing_ratio
+    '''
+    )
 
 
 class _Encoder(nn.Module):
