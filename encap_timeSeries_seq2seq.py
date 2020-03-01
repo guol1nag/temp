@@ -191,20 +191,19 @@ class _Seq2Seq(nn.Module):
         self.decoder = decoder
         self.device = device
 
-    def forward(self, seq2seq_input, target, teacher_forcing_ratio=0.5):
+      
+    def forward(self, seq2seq_input: '[seq_len, batch size,Enc_emb_dim]', \
+                      target: ' [trg_len, batch size,output_dim]', \
+                      teacher_forcing_ratio = 0.5) -> '[trg_len, batch_size,dec_output_size]':
 
-        # seq2seq_input = [seq_len, batch size,Enc_emb_dim]
-        # target = [trg_len, batch size,output_dim]
-        # teacher_forcing_ratio is probability to use teacher forcing
-        # e.g. if teacher_forcing_ratio is 0.75 we use teacher forcing 75% of the time
+        # if teacher_forcing_ratio is 0.75 we use teacher forcing 75% of the time
 
         batch_size = seq2seq_input.shape[1]
         trg_len = target.shape[0]
-        trg_vocab_size = self.decoder.output_dim
-
-        # tensor to store decoder outputs
-        outputs = torch.zeros(trg_len, batch_size,
-                              trg_vocab_size).to(self.device)
+        dec_output_size = self.decoder.output_dim
+                                    
+        dec_output = torch.zeros(trg_len, batch_size,
+                              dec_output_size).to(self.device)
 
         # encoder_outputs is all hidden states of the input sequence, back and forwards
         # hidden is the final forward and backward hidden states, passed through a linear layer
@@ -221,7 +220,7 @@ class _Seq2Seq(nn.Module):
             output, hidden = self.decoder(dec_input, hidden, encoder_outputs)
 
             # place predictions in a tensor holding predictions for each token
-            outputs[t] = output
+            dec_output[t] = output
 
             # decide if we are going to use teacher forcing or not
             teacher_force = random.random() < teacher_forcing_ratio
@@ -234,7 +233,7 @@ class _Seq2Seq(nn.Module):
             # if not, use predicted token
             dec_input = target[t] if teacher_force else top1
             dec_input = dec_input.unsqueeze(1).float()
-        return outputs
+        return dec_output
 
     def save(self, name_path):
         torch.save(self.state_dict(), name_path)  # e.g. 'encoder_model.pt'
