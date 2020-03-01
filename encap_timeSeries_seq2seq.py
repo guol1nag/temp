@@ -38,6 +38,11 @@ def show_parameter():
     run function: seq2seq_evaluate to evaluate, 
             in which you should pass:
     model, X_test, y_test, lossfunction
+    
+    to predict you do:
+    model(self, seq2seq_input, target, teacher_forcing_ratio = 0)
+    target has size[trg_len, batch size,output_dim], trg_len is prediction len
+    
     '''
     )
 
