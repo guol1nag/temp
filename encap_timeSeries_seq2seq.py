@@ -63,9 +63,7 @@ class _Encoder(nn.Module):
 
         # enc_input = [enc_input_len, batch size,emb_dim]
 
-        embedded = self.dropout(enc_input)
-
-        # embedded = [enc_input_len, batch size, emb_dim]
+        embedded = self.dropout(enc_input)  # embedded = [enc_input_len, batch size, emb_dim]
 
         outputs, hidden = self.rnn(embedded)
 
@@ -112,13 +110,9 @@ class _Attention(nn.Module):
         # encoder_outputs = [batch size, enc_seq_len, enc hid dim * 2]
 
         energy = torch.tanh(
-            self.attn(torch.cat((hidden, encoder_outputs), dim=2)))
+            self.attn(torch.cat((hidden, encoder_outputs), dim=2))) # energy = [batch size, enc_seq_len, dec hid dim]
 
-        # energy = [batch size, enc_seq_len, dec hid dim]
-
-        attention = self.v(energy).squeeze(2)
-
-        # attention= [batch size, enc_seq_len]
+        attention = self.v(energy).squeeze(2)   # attention= [batch size, enc_seq_len]
 
         return F.softmax(attention, dim=1)
 
@@ -129,8 +123,6 @@ class _Decoder(nn.Module):
 
         self.output_dim = output_dim
         self.attention = attention
-
-        #self.embedding = nn.Embedding(output_dim, output_dim)
 
         self.rnn = nn.GRU((enc_hid_dim * 2) + output_dim, dec_hid_dim)
 
