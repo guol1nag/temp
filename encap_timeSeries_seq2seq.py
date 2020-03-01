@@ -41,7 +41,9 @@ def show_parameter():
     
     to predict you do:
     model(self, seq2seq_input, target, teacher_forcing_ratio = 0)
-    target has size[trg_len, batch size,output_dim], trg_len is prediction len
+
+    seq2seq_input = [seq_len, batch size,Enc_emb_dim]
+    target = [trg_len, batch size,output_dim], trg_len is prediction len
     
     '''
     )
