@@ -14,19 +14,21 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def show_parameter():
 
     print(
-        ''' Hello:
+        ''' 
+    This is a seq2seq model, embedding should be done before input into this model
+    default loss function is MSELoss()
 
     run function: instan_things to instantiate your model, 
             in which you should define the following dictionary parameters
-
-    param = {'max_epochs':3,
+    e.g.
+    param = {'max_epochs':64,
             'learning_rate':1e-3,       
             'clip':1,                  # clip grad norm
             'teacher_forcing_ratio':1, # during training
-            'OUTPUT_DIM':1,
-            'ENC_EMB_DIM':21,
-            'ENC_HID_DIM':32,
-            'DEC_HID_DIM':32,
+            'OUTPUT_DIM':1,            # intented output dimension
+            'ENC_EMB_DIM':21,          # embedding space of your input
+            'ENC_HID_DIM':32,          
+            'DEC_HID_DIM':32,          # hidden dimension should be the same
             'ENC_DROPOUT':0,
             'DEC_DROPOUT':0,
             'device':device}
