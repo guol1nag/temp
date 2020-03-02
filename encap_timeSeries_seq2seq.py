@@ -54,7 +54,7 @@ def show_parameter():
 class _Encoder(nn.Module):
     def __init__(self, emb_dim, enc_hid_dim, dec_hid_dim, dropout):
         super().__init__()
-        self.rnn = nn.GRU(input_size=emb_dim,
+        self.rnn = nn.LSTM(input_size=emb_dim,
                           hidden_size=enc_hid_dim, bidirectional=True)
         self.fc = nn.Linear(enc_hid_dim * 2, dec_hid_dim)
         self.dropout = nn.Dropout(dropout)
@@ -124,7 +124,7 @@ class _Decoder(nn.Module):
         self.output_dim = output_dim
         self.attention = attention
 
-        self.rnn = nn.GRU((enc_hid_dim * 2) + output_dim, dec_hid_dim)
+        self.rnn = nn.LSTM((enc_hid_dim * 2) + output_dim, dec_hid_dim)
 
         self.fc_out = nn.Linear(
             (enc_hid_dim * 2) + dec_hid_dim + output_dim, output_dim)
