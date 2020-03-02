@@ -16,9 +16,13 @@ def show_parameter():
     print(
         ''' 
     This is a seq2seq model, embedding should be done before input into this model
+    
+    RNN used is GRU
+    
     default loss function is MSELoss()
 
-    run function: instan_things to instantiate your model, 
+    run function: instan_things,
+         to instantiate your model, 
             in which you should define the following dictionary parameters
     e.g.
     param = {'max_epochs':64,
@@ -33,17 +37,16 @@ def show_parameter():
             'DEC_DROPOUT':0,
             'device':device}
       
-    run function: seq2seq_running to train your model,
-            in which you should pass:
-    grid, model, optimiser, lossfunction, X_train, y_train, X_test, y_test, teacher_forcing_ratio
+    Training:
+    seq2seq_running(grid, model, optimiser, lossfunction, X_train, y_train, X_test, y_test, teacher_forcing_ratio)
     
-    run function: seq2seq_evaluate to evaluate, 
-            in which you should pass:
-    model, X_test, y_test, lossfunction
+    Evaluation:
+    seq2seq_evaluate(model, X_test, y_test, lossfunction)
     
-    to predict you do:
+    Prediction:
     model(self, seq2seq_input, target, teacher_forcing_ratio = 0)
-
+    
+    in which:
     seq2seq_input = [seq_len, batch size,Enc_emb_dim]
     target = [trg_len, batch size,output_dim], trg_len is prediction len
     
@@ -54,7 +57,7 @@ def show_parameter():
 class _Encoder(nn.Module):
     def __init__(self, emb_dim, enc_hid_dim, dec_hid_dim, dropout):
         super().__init__()
-        self.rnn = nn.LSTM(input_size=emb_dim,
+        self.rnn = nn.GRU(input_size=emb_dim,
                           hidden_size=enc_hid_dim, bidirectional=True)
         self.fc = nn.Linear(enc_hid_dim * 2, dec_hid_dim)
         self.dropout = nn.Dropout(dropout)
@@ -124,7 +127,7 @@ class _Decoder(nn.Module):
         self.output_dim = output_dim
         self.attention = attention
 
-        self.rnn = nn.LSTM((enc_hid_dim * 2) + output_dim, dec_hid_dim)
+        self.rnn = nn.GRU((enc_hid_dim * 2) + output_dim, dec_hid_dim)
 
         self.fc_out = nn.Linear(
             (enc_hid_dim * 2) + dec_hid_dim + output_dim, output_dim)
