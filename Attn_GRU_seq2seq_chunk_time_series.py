@@ -120,6 +120,7 @@ class helper_functions():
         torch.nn.utils.clip_grad_norm_(model.parameters(), clip)
         optimiser.step()
         epoch_loss += loss.item()
+        
        return epoch_loss
 
     @staticmethod
@@ -138,7 +139,7 @@ class helper_functions():
           local_labels = local_labels.view(-1)[1:]
           loss = lossfunction(local_output, local_labels)
           epoch_loss += loss.item()
-      return epoch_loss
+        return epoch_loss
 
     @staticmethod
     def seq2seq_running(grid,model,optimiser,lossfunction,X_train,y_train,X_test,y_test,teacher_forcing_ratio,train_seg_len,test_seg_len):
