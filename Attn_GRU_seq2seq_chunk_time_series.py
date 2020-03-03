@@ -153,8 +153,8 @@ class helper_functions():
 
       for epoch in range(grid['max_epochs']):
 
-        train_loss = training(model, train_seg, optimiser, lossfunction, grid['clip'],teacher_forcing_ratio)
-        valid_loss = evaluate(model, test_seg, lossfunction)
+        train_loss = helper_functions.training(model, train_seg, optimiser, lossfunction, grid['clip'],teacher_forcing_ratio)
+        valid_loss = helper_functions.evaluate(model, test_seg, lossfunction)
 
         if valid_loss < best_valid_loss:
           best_valid_loss = valid_loss
