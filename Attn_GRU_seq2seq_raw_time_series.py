@@ -15,7 +15,7 @@ def show_parameter():
 
     print(
         ''' 
-    This is a seq2seq model, embedding should be done before input into this model
+    This is a seq2seq model, can only accept one input, embedding should be done before input into this model
     
     RNN used is GRU
     
