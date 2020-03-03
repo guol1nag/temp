@@ -36,7 +36,7 @@ def show_parameter():
             'ENC_DROPOUT':0,
             'DEC_DROPOUT':0,
             'train_seg_len':10,        # chunk time series sequence length
-            'test_seg_len':5           # chunk time series sequence length
+            'test_seg_len':5,           # chunk time series sequence length
             'device':device}
       
     Training:
@@ -59,9 +59,8 @@ class helper_functions():
     def instan_things(**kwargs):
         grid = {'max_epochs': kwargs['max_epochs'],
                 'learning_rate': kwargs['learning_rate'],
-                'clip': kwargs['clip'],
-                # during training
-                'teacher_forcing_ratio': kwargs['teacher_forcing_ratio']
+                'clip': kwargs['clip'],                                     # during training
+                'teacher_forcing_ratio': kwargs['teacher_forcing_ratio'],
                 'train_seg_len':kwargs['train_seg_len'],
                  'test_seg_len':kwargs['test_seg_len']
                 }
