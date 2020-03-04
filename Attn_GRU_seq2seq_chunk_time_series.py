@@ -50,9 +50,9 @@ def show_parameter():
     Prediction:
     model(self, seq2seq_input, target, teacher_forcing_ratio = 0)
 
-    in which:
-    seq2seq_input = [seq_len, batch size,Enc_emb_dim]
-    target = [trg_len, batch size,output_dim], trg_len is prediction len
+    Args:
+        seq2seq_input = [seq_len, batch size,Enc_emb_dim]
+        target = [trg_len, batch size,output_dim], trg_len is prediction len
 
     '''
     )
