@@ -234,7 +234,6 @@ class _Dataset():
             self.X_res  [the residual N_sample, chunk_seq_len, N_feature]
             self.y_res  [the residual N_sample, chunk_seq_len]
         '''
-        # to do: change this to prediction mode
         N_samples = self._X.shape[0]
         for i in range(0, N_samples, chunk_seq_len):
             X_segment = self._X[i:min(
@@ -259,35 +258,25 @@ class _Dataset():
             segment = self._segment[i]
             if i == 0:
                 self.X = segment[0: chunk_seq_len, :].unsqueeze(0)
-                self.y = segment[chunk_seq_len: 2 *
-                                 chunk_seq_len, -1].unsqueeze(0)
-            else:
+                self.y = segment[chunk_seq_len: 2*chunk_seq_len, -1].unsqueeze(0)
                 self.X = torch.cat(
-                    (self.X, segment[0: chunk_seq_len, :].unsqueeze(0)))
+                    (self.X, segment[chunk_seq_len: 2*chunk_seq_len, :].unsqueeze(0)))            
+            elif i == N_samples-1:
                 self.y = torch.cat(
-                    (self.y, segment[chunk_seq_len: 2*chunk_seq_len, -1].unsqueeze(0)))
-
-    def shuffler(self):
-        n = self._segment.size(0)
-        rand = torch.randperm(n)
-        self._segment = self._segment[rand]
-
-    def batcher(self, batch_size):
-        '''
-        Args:
-          output results attributes:
-              x  [batch_size, chunk_seq_len, N_feature]
-              y  [batch_size, chunk_seq_len]
-        '''
-
-        l = len(self.X)
-        # l_res = len(self.X_res)
-        for batch in range(0, l, batch_size):
-            # RNN has restriction for batch size
-            if self.X[batch:min(batch + batch_size, l)].size(0) == batch_size:
-                yield (self.X[batch:min(batch + batch_size, l)], self.y[batch:min(batch + batch_size, l)])
-        # for batch in range(0, l_res, batch_size):
-        #     yield (self.X_res[batch:min(batch + batch_size, l)], self.y_res[batch:min(batch + batch_size, l)])
+                    (self.y, segment[ 0: chunk_seq_len, -1].unsqueeze(0)))
+                self.X = torch.cat(
+                    (self.X, segment[  0: chunk_seq_len, :].unsqueeze(0)))
+                self.y = torch.cat(
+                    (self.y, segment[ chunk_seq_len: 2*chunk_seq_len, -1].unsqueeze(0)))
+            else:               
+                self.y = torch.cat(
+                    (self.y, segment[ 0: chunk_seq_len, -1].unsqueeze(0)))
+                self.X = torch.cat(
+                    (self.X, segment[  0: chunk_seq_len, :].unsqueeze(0)))
+                self.y = torch.cat(
+                    (self.y, segment[ chunk_seq_len: 2*chunk_seq_len, -1].unsqueeze(0)))
+                self.X = torch.cat(
+                    (self.X, segment[ chunk_seq_len: 2*chunk_seq_len, :].unsqueeze(0)))
 
 
 class _Encoder(nn.Module):
