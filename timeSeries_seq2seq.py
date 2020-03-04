@@ -218,8 +218,8 @@ class _Dataset():
             self.shuffler()
         self.X = self._segment[:, :, :-1]
         self.y = self._segment[:, :, -1]
-        self.X_res = self._residual[:, :, :-1]
-        self.y_res = self._residual[:, :, -1]
+        #self.X_res = self._residual[:, :, :-1]
+        #self.y_res = self._residual[:, :, -1]
 
     def bag_of_timeSeries_chunk(self,
                                 chunk_seq_len: int,
