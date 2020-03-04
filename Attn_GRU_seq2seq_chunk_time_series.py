@@ -135,16 +135,16 @@ class helper_functions():
         with torch.no_grad():
             for local_batch, local_labels in test_Loader.batcher(batch_size):
 
-            local_batch, local_labels = local_batch.transpose(0, 1).to(
-                device), local_labels.transpose(0, 1).to(device)
-            local_labels = local_labels.unsqueeze(2)
+                local_batch, local_labels = local_batch.transpose(0, 1).to(
+                    device), local_labels.transpose(0, 1).to(device)
+                local_labels = local_labels.unsqueeze(2)
 
-            local_output = model(seq2seq_input=local_batch,
-                                 target=local_labels, teacher_forcing_ratio=0)
-            local_output = local_output.squeeze(2)[1:]
-            local_labels = local_labels.squeeze(2)[1:]
-            loss = lossfunction(local_output, local_labels)
-            epoch_loss += loss.item()
+                local_output = model(seq2seq_input=local_batch,
+                                    target=local_labels, teacher_forcing_ratio=0)
+                local_output = local_output.squeeze(2)[1:]
+                local_labels = local_labels.squeeze(2)[1:]
+                loss = lossfunction(local_output, local_labels)
+                epoch_loss += loss.item()
         return epoch_loss
 
     @staticmethod
