@@ -168,11 +168,11 @@ class helper_functions():
                                   lossfunction, grid['batch_size'])
 
             if valid_loss < best_valid_loss:
-            best_valid_loss = valid_loss
-            m = copy.deepcopy(model)
-            print(f'Epoch: {epoch+1}:')
-            print(f'Train Loss: {train_loss:.3f}')
-            print(f'Validation Loss: {valid_loss:.3f}')
+                best_valid_loss = valid_loss
+                m = copy.deepcopy(model)
+                print(f'Epoch: {epoch+1}:')
+                print(f'Train Loss: {train_loss:.3f}')
+                print(f'Validation Loss: {valid_loss:.3f}')
 
         return best_valid_loss, m
 
