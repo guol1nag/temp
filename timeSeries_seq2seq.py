@@ -183,8 +183,8 @@ class _Dataset():
             X: [N_samples,N-features] Tensor
             y: [N_samples (labels) ]  Tensor
         """
-        self._X = X  # feature
-        self._y = y  # price
+        self._X = X # feature
+        self._y = y # price
 
     def timeSeires_chunker(self,
                            chunk_seq_len: int,
@@ -218,8 +218,8 @@ class _Dataset():
             self.shuffler()
         self.X = self._segment[:, :, :-1]
         self.y = self._segment[:, :, -1]
-        #self.X_res = self._residual[:, :, :-1]
-        #self.y_res = self._residual[:, :, -1]
+        # self.X_res = self._residual[:, :, :-1]
+        # self.y_res = self._residual[:, :, -1]
 
     def bag_of_timeSeries_chunk(self,
                                 chunk_seq_len: int,
@@ -278,6 +278,26 @@ class _Dataset():
                 self.X = torch.cat(
                     (self.X, segment[ chunk_seq_len: 2*chunk_seq_len, :].unsqueeze(0)))
 
+    def shuffler(self):
+        n = self._segment.size(0)
+        rand = torch.randperm(n)
+        self._segment = self._segment[rand]
+
+    def batcher(self, batch_size):
+        '''
+        Args:
+          output results attributes:
+              x  [batch_size, chunk_seq_len, N_feature]
+              y  [batch_size, chunk_seq_len]
+        '''
+
+        l = len(self.X)
+        # l_res = len(self.X_res)
+        for batch in range(0, l, batch_size):       # RNN has restriction for batch size
+            if self.X[batch:min(batch + batch_size, l)].size(0) == batch_size:
+                yield (self.X[batch:min(batch + batch_size, l)], self.y[batch:min(batch + batch_size, l)])
+        # for batch in range(0, l_res, batch_size):
+        #     yield (self.X_res[batch:min(batch + batch_size, l)], self.y_res[batch:min(batch + batch_size, l)])
 
 class _Encoder(nn.Module):
     def __init__(self, emb_dim, enc_hid_dim, dec_hid_dim, dropout):
