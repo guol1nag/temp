@@ -92,7 +92,7 @@ class helper_functions():
         return (grid, model, optimiser, lossfunction)
 
     @staticmethod
-    def seq2seq_training(model, train_seg, optimiser, lossfunction, clip, teacher_forcing_ratio, batch_size):
+    def seq2seq_training(model, training_Loader, optimiser, lossfunction, clip, teacher_forcing_ratio, batch_size):
         model.train()
         epoch_loss = 0
 
@@ -129,7 +129,7 @@ class helper_functions():
         return epoch_loss
 
     @staticmethod
-    def seq2seq_evaluate(model, test_seg, lossfunction, batch_size):
+    def seq2seq_evaluate(model, test_Loader, lossfunction, batch_size):
         model.eval()
         epoch_loss = 0
         with torch.no_grad():
@@ -162,10 +162,10 @@ class helper_functions():
 
         for epoch in range(grid['max_epochs']):
 
-            train_loss = training(model, training_Loader, optimiser, lossfunction,
-                                  grid['clip'], teacher_forcing_ratio, grid['batch_size'])
-            valid_loss = evaluate(model, test_Loader,
-                                  lossfunction, grid['batch_size'])
+            train_loss = helper_functions.seq2seq_training(model, training_Loader, optimiser, lossfunction,
+                                                           grid['clip'], teacher_forcing_ratio, grid['batch_size'])
+            valid_loss = helper_functions.seq2seq_evaluate(model, test_Loader,
+                                                           lossfunction, grid['batch_size'])
 
             if valid_loss < best_valid_loss:
                 best_valid_loss = valid_loss
