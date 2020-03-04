@@ -153,10 +153,10 @@ class helper_functions():
 
         # data loader
         training_Loader = _Dataset(X_train, y_train)
-        training_Loader.timeSeires_chunker(chunk_seq_len)
+        training_Loader.bag_of_timeSeries_chunk(chunk_seq_len)
 
         test_Loader = _Dataset(X_test, y_test)
-        test_Loader.timeSeires_chunker(chunk_seq_len)
+        test_Loader.bag_of_timeSeries_chunk(chunk_seq_len)
 
         for epoch in range(grid['max_epochs']):
 
