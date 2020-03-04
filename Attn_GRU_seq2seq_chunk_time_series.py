@@ -194,8 +194,14 @@ class _Dataset():
                            test_seq_len: int,
                            shuffle=True):
         '''
-        output:
-              [N_sample, train_seq_len + test_seq_len, N_feature]
+        current mode:
+
+        output class attributes:
+            self.X  [N_sample, train_seq_len + test_seq_len, N_feature]
+            self.y  [N_sample, train_seq_len + test_seq_len, price]
+            self.X_res  [the residual N_sample, train_seq_len + test_seq_len, N_feature]
+            self.y_res  [the residual N_sample, train_seq_len + test_seq_len, price]
+
         '''
         seq_len = train_seq_len + test_seq_len
         N_samples = self._X.shape[0]
