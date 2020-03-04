@@ -140,7 +140,7 @@ class helper_functions():
                 local_labels = local_labels.unsqueeze(2)
 
                 local_output = model(seq2seq_input=local_batch,
-                                    target=local_labels, teacher_forcing_ratio=0)
+                                     target=local_labels, teacher_forcing_ratio=0)
                 local_output = local_output.squeeze(2)[1:]
                 local_labels = local_labels.squeeze(2)[1:]
                 loss = lossfunction(local_output, local_labels)
@@ -383,54 +383,55 @@ class _Seq2Seq(nn.Module):
         self.decoder = decoder
         self.device = device
 
-  def forward(self, seq2seq_input, target,teacher_forcing_ratio = 0.5):
-    """
-    Args:
-        seq2seq_input: '[seq_len, batch size,Enc_emb_dim]' #torch.Tensor
-        target: ' [trg_len, batch size,output_dim]'        #torch.Tensor
-        teacher_forcing_ratio:                             #teacher_forcing_ratio during training
+    def forward(self, seq2seq_input, target, teacher_forcing_ratio=0.5):
+        """
+        Args:
+            seq2seq_input: '[seq_len, batch size,Enc_emb_dim]' #torch.Tensor
+            target: ' [trg_len, batch size,output_dim]'        #torch.Tensor
+            teacher_forcing_ratio:                             #teacher_forcing_ratio during training
 
-        -> '[trg_len, batch_size, dec_output_size]'
-    """
-    # if teacher_forcing_ratio is 0.75 we use teacher forcing 75% of the time
+            -> '[trg_len, batch_size, dec_output_size]'
+        """
+        # if teacher_forcing_ratio is 0.75 we use teacher forcing 75% of the time
 
-    batch_size = seq2seq_input.shape[1]
-    trg_len = target.shape[0]
-    dec_output_size = self.decoder.output_dim
-    dec_output = torch.zeros(trg_len, batch_size, dec_output_size).to(self.device)
-    
-    # encoder_outputs is all hidden states of the input sequence, back and forwards
-    # hidden is the final forward and backward hidden states, passed through a linear layer
-    encoder_outputs, hidden = self.encoder(seq2seq_input)
-            
-    # check: make dimension consistent 
-    dec_input = target[0]
-    dec_input = dec_input.unsqueeze(0)
-    # print('dec_input dim:',dec_input.size())
-    
-    for t in range(1, trg_len):
-    # insert dec_input token embedding, previous hidden state and all encoder hidden states
-    # receive output tensor (predictions) and new hidden state
-    # print('in dec')
-    # print(dec_input.size())
+        batch_size = seq2seq_input.shape[1]
+        trg_len = target.shape[0]
+        dec_output_size = self.decoder.output_dim
+        dec_output = torch.zeros(
+            trg_len, batch_size, dec_output_size).to(self.device)
 
-        output, hidden = self.decoder(dec_input, hidden, encoder_outputs)
-        
-        # place predictions in a tensor holding predictions for each token
-        dec_output[t] = output
-        
-        # decide if we are going to use teacher forcing or not
-        teacher_force = random.random() < teacher_forcing_ratio
-        
-        # get the highest predicted token from our predictions
-        top1 = output.argmax(1)
-        top1 = top1.unsqueeze(1)
+        # encoder_outputs is all hidden states of the input sequence, back and forwards
+        # hidden is the final forward and backward hidden states, passed through a linear layer
+        encoder_outputs, hidden = self.encoder(seq2seq_input)
 
-        # teacher forcing: MUST check consistency
-        dec_input = target[t] if teacher_force else top1
-        dec_input = dec_input.unsqueeze(0).float()
-        # print(dec_input.size())
-    return dec_output
+        # check: make dimension consistent
+        dec_input = target[0]
+        dec_input = dec_input.unsqueeze(0)
+        # print('dec_input dim:',dec_input.size())
+
+        for t in range(1, trg_len):
+            # insert dec_input token embedding, previous hidden state and all encoder hidden states
+            # receive output tensor (predictions) and new hidden state
+            # print('in dec')
+            # print(dec_input.size())
+
+            output, hidden = self.decoder(dec_input, hidden, encoder_outputs)
+
+            # place predictions in a tensor holding predictions for each token
+            dec_output[t] = output
+
+            # decide if we are going to use teacher forcing or not
+            teacher_force = random.random() < teacher_forcing_ratio
+
+            # get the highest predicted token from our predictions
+            top1 = output.argmax(1)
+            top1 = top1.unsqueeze(1)
+
+            # teacher forcing: MUST check consistency
+            dec_input = target[t] if teacher_force else top1
+            dec_input = dec_input.unsqueeze(0).float()
+            # print(dec_input.size())
+        return dec_output
 
     def save(self, name_path):
         print('the saved model cannot be trained again!')
