@@ -277,6 +277,7 @@ class _Dataset():
                     (self.y, segment[ chunk_seq_len: 2*chunk_seq_len, -1].unsqueeze(0)))
                 self.X = torch.cat(
                     (self.X, segment[ chunk_seq_len: 2*chunk_seq_len, :].unsqueeze(0)))
+        print('max batch size:',self.X.size())
 
     def shuffler(self):
         n = self._segment.size(0)
