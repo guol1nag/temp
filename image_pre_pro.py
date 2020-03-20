@@ -118,3 +118,30 @@ class Dataset_utility():
         stretching: random with stretch factor between 1/1.3 and 1.3 (log-uniform)
         '''
         pass
+
+    def _flip_image(self, image):
+        '''
+        Args:
+            image -> np 1d array 
+            the first 25 * 25 numbers are the pixel of the image
+
+        Output:
+            [25*25 + ratio + label] (the flipped image)
+        '''
+        img = image.ravel()[:25*25].reshape(25, 25)
+        return np.flip(img, axis=1).ravel() + image.ravel()[25*25:]
+
+    def _rotate(self, image):
+        '''
+        Args:
+            image -> np 1d array 
+            the first 25 * 25 numbers are the pixel of the image
+
+        Output:
+            [25*25 + ratio + label] (the rotated image)
+        '''
+        img = image.ravel()[:25*25].reshape(25, 25)
+        return img.T.ravel() + image.ravel()[25*25:]
+
+    def funcname(self, parameter_list):
+        pass
