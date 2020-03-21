@@ -149,7 +149,7 @@ class Dataset_utility():
             [25*25 + ratio + label] (the flipped image)
         '''
         img = image.ravel()[:25*25].reshape(25, 25)
-        return np.flip(img, axis=1).ravel() + image.ravel()[25*25:]
+        return np.append(np.flip(img, axis=1).ravel(), image.ravel()[25*25:])
 
     def _rotate(self, image):
         '''
@@ -161,4 +161,4 @@ class Dataset_utility():
             [25*25 + ratio + label] (the rotated image)
         '''
         img = image.ravel()[:25*25].reshape(25, 25)
-        return img.T.ravel() + image.ravel()[25*25:]
+        return np.append(img.T.ravel(), image.ravel()[25*25:])
