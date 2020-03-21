@@ -32,8 +32,20 @@ class Dataset_utility():
         self.y = list()
         for l in label:
             self.y.append(self.label2num[l][0])  # first num is category
-        self.y = np.array(self.y)  # first num is category
+        self.y = np.array(self.y)
         # get the total training images
+
+    def counter(self):
+        '''
+        count how many images corresponding to each label
+        '''
+        counter = {}
+        for label in self.y:
+            if label in counter:
+                counter[label] += 1
+            else:
+                counter[label] = 1
+        return counter
 
     def _getMinorMajorRatio(self, image):
         image = image.copy()
@@ -142,6 +154,3 @@ class Dataset_utility():
         '''
         img = image.ravel()[:25*25].reshape(25, 25)
         return img.T.ravel() + image.ravel()[25*25:]
-
-    def funcname(self, parameter_list):
-        pass
