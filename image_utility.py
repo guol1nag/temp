@@ -290,7 +290,7 @@ class Dataset_utility():
 
             # get the class name
             for key, value in self.label2num.items():
-                if value == num_label:
+                if value[0] == num_label:
                     label = key
 
             class_name = label
