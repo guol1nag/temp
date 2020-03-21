@@ -154,8 +154,8 @@ class Dataset_utility():
             '''
             label whose samples below the average number will be augmented
             '''
-            aug_label = [float(key) for key in stats if float(
-                sample_map[key]) <= stats['mean']]
+            aug_label = [float(key) for key in sample_map if float(
+                sample_map[key]) <= float(stats['mean'])]
 
             for image in self.data:
                 if image[-1] in aug_label:
