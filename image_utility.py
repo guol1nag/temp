@@ -141,6 +141,10 @@ class Dataset_utility():
         flipping: yes or no (bernoulli)
         shearing: random with angle between -20° and 20° (uniform)
         stretching: random with stretch factor between 1/1.3 and 1.3 (log-uniform)
+
+        Args:
+            kwargs['shear_param'] ~ 0.1, 0.2
+            kwargs['translate_param'] (1,2) -> left shift 1, up shift 2
         '''
 
         sample_map, stats = self.show_stat
