@@ -72,7 +72,7 @@ class Dataset_utility():
                 regionmaxprop = regionprop
         return regionmaxprop
 
-    def image_rescaling(self, pixel=125):
+    def image_rescaling(self, pixel=50):
         '''
         Returns:
             self.data [N_samples,N_pixels + ratio + label]; label -> float
