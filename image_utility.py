@@ -41,21 +41,28 @@ class Dataset_utility():
         '''
         compute the statistics of the training data
         '''
-        counter = {}
+        stats = {}
+        sample_map = {}
         for label in self.y:
-            if label in counter:
-                counter[label] += 1
+            if label in sample_map:
+                sample_map[label] += 1
             else:
-                counter[label] = 1
+                sample_map[label] = 1
 
-        stat = []
-        for key in counter:
-            stat.append(counter[key])
+        counter = []
+        for key in sample_map:
+            counter.append(sample_map[key])
 
-        print('N_sample mean:', np.array(stat).mean())
-        print('N_sample median:', np.median(np.array([stat])))
+        counter = np.array(counter)
 
-        return counter
+        stats = {'mean': np.mean(counter),
+                 'median': np.median(counter),
+                 'min': np.min(counter),
+                 'max': np.max(counter),
+                 'std': np.std(counter),
+                 }
+
+        return sample_map, stats
 
     def _getMinorMajorRatio(self, image):
         image = image.copy()
@@ -143,11 +150,12 @@ class Dataset_utility():
         stretching: random with stretch factor between 1/1.3 and 1.3 (log-uniform)
         '''
 
+        _, stats = self.counter
+
         if mode == 'mean':
             '''
             label whose samples below the average number will be augmented 
             '''
-
 
     def _flip_image(self, image):
         '''
