@@ -192,17 +192,17 @@ class Dataset_utility():
                 if image[-1] in aug_label:
                     try:
                         aug_list = np.concatenate(
-                            [aug_list, self.shear_image(image, kwargs['shear_param2']).reshape(1, -1)], axis=0)
+                            [aug_list, self.shear_image(image, kwargs['shear_param_2']).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
-                            [aug_list, self.translate_image(image, kwargs['translate_param2']).reshape(1, -1)], axis=0)
+                            [aug_list, self.translate_image(image, kwargs['translate_param_2']).reshape(1, -1)], axis=0)
 
                     except NameError:
 
                         aug_list = self.shear_image(
-                            image, kwargs['shear_param2']).reshape(1, -1)
+                            image, kwargs['shear_param_2']).reshape(1, -1)
 
                         aug_list = np.concatenate(
-                            [aug_list, self.translate_image(image, kwargs['translate_param2']).reshape(1, -1)], axis=0)
+                            [aug_list, self.translate_image(image, kwargs['translate_param_2']).reshape(1, -1)], axis=0)
 
         self.data = np.concatenate([self.data, aug_list], axis=0)
 
