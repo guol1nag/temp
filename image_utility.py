@@ -45,6 +45,14 @@ class Dataset_utility():
                 counter[label] += 1
             else:
                 counter[label] = 1
+
+        stat = []
+        for key in counter:
+            stat.append(counter[key])
+
+        print('N_sample mean:', np.array(stat).mean())
+        print('N_sample median:', np.median(np.array([stat])))
+
         return counter
 
     def _getMinorMajorRatio(self, image):
