@@ -292,6 +292,8 @@ class Dataset_utility():
             for key, value in self.label2num.items():
                 if value[0] == num_label:
                     label = key
+                else:
+                    raise ValueError('name label cannot be retrieved')
 
             class_name = label
 
