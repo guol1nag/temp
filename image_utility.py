@@ -130,13 +130,6 @@ class Dataset_utility():
             self.data[c, imageSize] = axisratio
             self.data[c, imageSize+1] = self.y[c]
 
-    def shuffler(self):
-        '''
-        Outputs:
-            self.data (after shuffle)
-        '''
-        pass
-
     def image_augmentation(self, **kwargs):
         '''
         To augment some categories of the dataset
@@ -230,6 +223,12 @@ class Dataset_utility():
         affine_tf = tf.AffineTransform(translation=Coe_translation)
 
         return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[25*25:])
+
+    def shuffler(self):
+        '''
+        to shuffle the data [N_sample,pixel + ratio + label]
+        '''
+        np.random.shuffle(self.data)
 
     def batcher(self, x, y, batch_size):
         l = len(y)
