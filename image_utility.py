@@ -36,9 +36,10 @@ class Dataset_utility():
         self.y = np.array(self.y)
         # get the total training images
 
+    @property
     def counter(self):
         '''
-        count how many images corresponding to each label
+        compute the statistics of the training data
         '''
         counter = {}
         for label in self.y:
