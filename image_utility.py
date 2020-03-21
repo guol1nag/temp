@@ -132,7 +132,7 @@ class Dataset_utility():
 
         return sample_map, stats
 
-    def image_augmentation(self, **kwargs):
+    def image_augmentation(self, mode, **kwargs):
         '''
         To augment some categories of the dataset
 
@@ -151,9 +151,10 @@ class Dataset_utility():
 
         sample_map, stats = self.show_stat
 
-        # if mode == 'mean':
-        if True:
+        if mode == 1:
             '''
+            mode 1 do full augmentation:
+
             label whose samples below the average number will be augmented
             '''
             aug_label = [float(key) for key in sample_map if float(
@@ -167,18 +168,41 @@ class Dataset_utility():
                         aug_list = np.concatenate(
                             [aug_list, self._rotate(image).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
-                            [aug_list, self.shear_image(image, kwargs['shear_param']).reshape(1, -1)], axis=0)
+                            [aug_list, self.shear_image(image, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
-                            [aug_list, self.translate_image(image, kwargs['translate_param']).reshape(1, -1)], axis=0)
+                            [aug_list, self.translate_image(image, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
 
                     except NameError:
                         aug_list = self._flip_image(image).reshape(1, -1)
                         aug_list = np.concatenate(
                             [aug_list, self._rotate(image).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
-                            [aug_list, self.shear_image(image, kwargs['shear_param']).reshape(1, -1)], axis=0)
+                            [aug_list, self.shear_image(image, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
-                            [aug_list, self.translate_image(image, kwargs['translate_param']).reshape(1, -1)], axis=0)
+                            [aug_list, self.translate_image(image, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
+
+        elif mode == 2:
+            '''
+            mode 2: only do shear and translation, according to the second set parameters
+            '''
+            aug_label = [float(key) for key in sample_map if float(
+                sample_map[key]) <= float(stats['mean'])]
+
+            for image in self.data:
+                if image[-1] in aug_label:
+                    try:
+                        aug_list = np.concatenate(
+                            [aug_list, self.shear_image(image, kwargs['shear_param2']).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(image, kwargs['translate_param2']).reshape(1, -1)], axis=0)
+
+                    except NameError:
+
+                        aug_list = self.shear_image(
+                            image, kwargs['shear_param2']).reshape(1, -1)
+
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(image, kwargs['translate_param2']).reshape(1, -1)], axis=0)
 
         self.data = np.concatenate([self.data, aug_list], axis=0)
 
