@@ -289,11 +289,14 @@ class Dataset_utility():
             num_label = int(num_labels[i])
 
             # get the class name
+            label = None
             for key, value in self.label2num.items():
                 if value[0] == num_label:
                     label = key
-                else:
-                    raise ValueError('name label cannot be retrieved')
+                break
+
+            if label == None:
+                raise ValueError('not exist')
 
             class_name = label
 
