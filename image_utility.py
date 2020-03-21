@@ -276,7 +276,23 @@ class Dataset_utility():
                 mum_label -> float, (N_sample,)
 
         '''
-        image = self.data[:, :-2]
-        num_label = self.data[:, -1]
+        images = self.data[:, :-2]
+        num_labels = self.data[:, -1]
 
+        for i, img in enumerate(images):
+            num_label = int(num_labels[i])
+
+            # get the class name
+            for key, value in self.label2num.items():
+                if value == num_label:
+                    label = key
+
+            class_name = label
+
+        # root/class_x/xxx.ext
+
+            file_name = os.path.join(path, f'{class_name}/sample{i}.npy')
+
+            np.savetxt(fname=file_name, X=img, fmt='%.18e', delimiter=' ', newline='\n',
+                       header='', footer='', comments='# ', encoding=None)
         pass
