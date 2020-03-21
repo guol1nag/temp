@@ -101,8 +101,8 @@ class Dataset_utility():
 
     def image_rescaling(self):
         '''
-        Args:
-            -> self.data [N_samples,N_pixels + ratio + label] 
+        Returns:
+            self.data [N_samples,N_pixels + ratio + label]; label -> float
         '''
 
         number_of_Images = len(self.train)
@@ -150,17 +150,43 @@ class Dataset_utility():
         stretching: random with stretch factor between 1/1.3 and 1.3 (log-uniform)
         '''
 
-        _, stats = self.counter
+        sample_map, stats = self.show_stat
 
-        if mode == 'mean':
+        # if mode == 'mean':
+        if True:
             '''
-            label whose samples below the average number will be augmented 
+            label whose samples below the average number will be augmented
             '''
+            aug_list = [float(key) for key in stats if float(
+                sample_map[key]) <= stats['mean']]
+
+            for image in self.data:
+                if image[-1] in aug_list:
+                    try:
+                        new_list = np.concatenate(
+                            [new_list, self._flip_image(image)], axis=0)
+                        new_list = np.concatenate(
+                            [new_list, self._rotate(image)], axis=0)
+                        new_list = np.concatenate(
+                            [new_list, self.shear_image(image, 0.2)], axis=0)
+                        new_list = np.concatenate(
+                            [new_list, self.translate_image(image, (1, 2))], axis=0)
+
+                    except NameError:
+                        new_list = self._flip_image(image)
+                        new_list = np.concatenate(
+                            [new_list, self._rotate(image)], axis=0)
+                        new_list = np.concatenate(
+                            [new_list, self.shear_image(image, 0.2)], axis=0)
+                        new_list = np.concatenate(
+                            [new_list, self.translate_image(image, (1, 2))], axis=0)
+
+        self.data = np.concatenate([self.data, new_list], axis=0)
 
     def _flip_image(self, image):
         '''
         Args:
-            image -> np 1d array 
+            image -> np 1d array
             the first 25 * 25 numbers are the pixel of the image
 
         Output:
@@ -172,7 +198,7 @@ class Dataset_utility():
     def _rotate(self, image):
         '''
         Args:
-            image -> np 1d array 
+            image -> np 1d array
             the first 25 * 25 numbers are the pixel of the image
 
         Output:
@@ -196,7 +222,7 @@ class Dataset_utility():
     def translate_image(self, image, Coe_translation: tuple):
         '''
         Args:
-            Coe_translation (1,2) -> left shift 1, up shift 2 
+            Coe_translation (1,2) -> left shift 1, up shift 2
         '''
 
         img = image.ravel()[:25*25].reshape(25, 25)
