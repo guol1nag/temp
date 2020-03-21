@@ -154,31 +154,31 @@ class Dataset_utility():
             '''
             label whose samples below the average number will be augmented
             '''
-            aug_list = [float(key) for key in stats if float(
+            aug_label = [float(key) for key in stats if float(
                 sample_map[key]) <= stats['mean']]
 
             for image in self.data:
-                if image[-1] in aug_list:
+                if image[-1] in aug_label:
                     try:
-                        new_list = np.concatenate(
-                            [new_list, self._flip_image(image)], axis=0)
-                        new_list = np.concatenate(
-                            [new_list, self._rotate(image)], axis=0)
-                        new_list = np.concatenate(
-                            [new_list, self.shear_image(image, kwargs['shear_param'])], axis=0)
-                        new_list = np.concatenate(
-                            [new_list, self.translate_image(image, kwargs['translate_param'])], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(image)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self._rotate(image)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.shear_image(image, kwargs['shear_param'])], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(image, kwargs['translate_param'])], axis=0)
 
                     except NameError:
-                        new_list = self._flip_image(image)
-                        new_list = np.concatenate(
-                            [new_list, self._rotate(image)], axis=0)
-                        new_list = np.concatenate(
-                            [new_list, self.shear_image(image, kwargs['shear_param'])], axis=0)
-                        new_list = np.concatenate(
-                            [new_list, self.translate_image(image, kwargs['translate_param'])], axis=0)
+                        aug_list = self._flip_image(image)
+                        aug_list = np.concatenate(
+                            [aug_list, self._rotate(image)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.shear_image(image, kwargs['shear_param'])], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(image, kwargs['translate_param'])], axis=0)
 
-        self.data = np.concatenate([self.data, new_list], axis=0)
+        self.data = np.concatenate([self.data, aug_list], axis=0)
 
     def _flip_image(self, image):
         '''
