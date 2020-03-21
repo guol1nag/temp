@@ -295,10 +295,9 @@ class Dataset_utility():
 
             class_name = label
 
-        # root/class_x/xxx.ext
+            # root/class_x/xxx.ext
 
             file_name = os.path.join(path, f'{class_name}/sample{i}.npy')
 
             np.savetxt(fname=file_name, X=img, fmt='%.18e', delimiter=' ', newline='\n',
                        header='', footer='', comments='# ', encoding=None)
-        pass
