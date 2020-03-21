@@ -72,18 +72,17 @@ class Dataset_utility():
                 regionmaxprop = regionprop
         return regionmaxprop
 
-    def image_rescaling(self, pixel=50):
+    def image_rescaling(self):
         '''
         Returns:
             self.data [N_samples,N_pixels + ratio + label]; label -> float
         '''
-        self.pixel = pixel
 
         number_of_Images = len(self.train)
         num_rows = number_of_Images  # one row for each image in the training dataset
 
-        # We'll rescale the images to be 75x75
-        maxPixel = self.pixel * self.pixel
+        # We'll rescale the images to be 25x25
+        maxPixel = 25
         imageSize = int(maxPixel * maxPixel)
         num_features = imageSize + 2  # for our ratio and label
 
@@ -212,27 +211,25 @@ class Dataset_utility():
         '''
         Args:
             image -> np 1d array
-            the first self.pixel * self.pixel numbers are the pixel of the image
+            the first 25 * 25 numbers are the pixel of the image
 
         Output:
-            [self.pixel*self.pixel + ratio + label] (the flipped image)
+            [25*25 + ratio + label] (the flipped image)
         '''
-        img = image.ravel()[:self.pixel *
-                            self.pixel].reshape(self.pixel, self.pixel)
-        return np.append(np.flip(img, axis=1).ravel(), image.ravel()[self.pixel*self.pixel:])
+        img = image.ravel()[:25*25].reshape(25, 25)
+        return np.append(np.flip(img, axis=1).ravel(), image.ravel()[25*25:])
 
     def _rotate(self, image):
         '''
         Args:
             image -> np 1d array
-            the first self.pixel * self.pixel numbers are the pixel of the image
+            the first 25 * 25 numbers are the pixel of the image
 
         Output:
-            [self.pixel*self.pixel + ratio + label] (the rotated image)
+            [25*25 + ratio + label] (the rotated image)
         '''
-        img = image.ravel()[:self.pixel *
-                            self.pixel].reshape(self.pixel, self.pixel)
-        return np.append(img.T.ravel(), image.ravel()[self.pixel*self.pixel:])
+        img = image.ravel()[:25*25].reshape(25, 25)
+        return np.append(img.T.ravel(), image.ravel()[25*25:])
 
     def shear_image(self, image, radian):
         '''
@@ -240,12 +237,11 @@ class Dataset_utility():
             radian ~ 0.1, 0.2
         '''
 
-        img = image.ravel()[:self.pixel *
-                            self.pixel].reshape(self.pixel, self.pixel)
+        img = image.ravel()[:25*25].reshape(25, 25)
 
         affine_tf = tf.AffineTransform(rotation=radian)
 
-        return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[self.pixel*self.pixel:])
+        return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[25*25:])
 
     def translate_image(self, image, Coe_translation: tuple):
         '''
@@ -253,12 +249,11 @@ class Dataset_utility():
             Coe_translation (1,2) -> left shift 1, up shift 2
         '''
 
-        img = image.ravel()[:self.pixel *
-                            self.pixel].reshape(self.pixel, self.pixel)
+        img = image.ravel()[:25*25].reshape(25, 25)
 
         affine_tf = tf.AffineTransform(translation=Coe_translation)
 
-        return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[self.pixel*self.pixel:])
+        return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[25*25:])
 
     def shuffler(self):
         '''
