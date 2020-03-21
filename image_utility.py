@@ -102,7 +102,6 @@ class Dataset_utility():
             self.data[c, imageSize] = axisratio
             self.data[c, imageSize+1] = self.y[c]
 
-    @property
     def show_stat(self):
         '''
         compute the statistics of the training data
