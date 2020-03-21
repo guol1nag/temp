@@ -236,7 +236,8 @@ class Dataset_utility():
         '''
         np.random.shuffle(self.data)
 
-    def batcher(self, x, y, batch_size):
+    @staticmethod
+    def batcher(x, y, batch_size):
         l = len(y)
         for batch in range(0, l, batch_size):
             yield (x[batch:min(batch + batch_size, l)], y[batch:min(batch + batch_size, l)])
