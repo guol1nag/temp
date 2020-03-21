@@ -146,7 +146,7 @@ class Dataset_utility():
             kwargs['translate_param'] (1,2) -> left shift 1, up shift 2
         '''
 
-        sample_map, stats = self.show_stat
+        sample_map, stats = self.show_stat()
 
         # if mode == 'mean':
         if True:
