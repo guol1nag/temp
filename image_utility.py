@@ -16,6 +16,7 @@ from skimage import measure
 from skimage import morphology
 from skimage.io import imread
 from skimage.transform import resize
+from skimage import transform as tf
 
 
 class Dataset_utility():
@@ -162,3 +163,27 @@ class Dataset_utility():
         '''
         img = image.ravel()[:25*25].reshape(25, 25)
         return np.append(img.T.ravel(), image.ravel()[25*25:])
+
+    def shear_image(self, image, radian):
+        '''
+        Args:
+            radian ~ 0.1, 0.2
+        '''
+
+        img = image.ravel()[:25*25].reshape(25, 25)
+
+        affine_tf = tf.AffineTransform(rotation=radian)
+
+        return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[25*25:])
+
+    def translate_image(self, image, Coe_translation: tuple):
+        '''
+        Args:
+            Coe_translation (1,2) -> left shift 1, up shift 2 
+        '''
+
+        img = image.ravel()[:25*25].reshape(25, 25)
+
+        affine_tf = tf.AffineTransform(translation=Coe_translation)
+
+        return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[25*25:])
