@@ -17,6 +17,7 @@ from skimage import morphology
 from skimage.io import imread
 from skimage.transform import resize
 from skimage import transform as tf
+import os
 
 
 class Dataset_utility():
@@ -265,3 +266,17 @@ class Dataset_utility():
         l = len(y)
         for batch in range(0, l, batch_size):
             yield (x[batch:min(batch + batch_size, l)], y[batch:min(batch + batch_size, l)])
+
+    def save_npy(self, path):
+        '''
+            Args:
+                path: the file path you want to save, exclude file name
+
+                image -> np matrix; (N_sample,625)
+                mum_label -> float, (N_sample,)
+
+        '''
+        image = self.data[:, :-2]
+        num_label = self.data[:, -1]
+
+        pass
