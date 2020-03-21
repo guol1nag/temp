@@ -137,7 +137,7 @@ class Dataset_utility():
         '''
         pass
 
-    def image_augmentation(self, mode):
+    def image_augmentation(self, **kwargs):
         '''
         To augment some categories of the dataset
 
@@ -168,18 +168,18 @@ class Dataset_utility():
                         new_list = np.concatenate(
                             [new_list, self._rotate(image)], axis=0)
                         new_list = np.concatenate(
-                            [new_list, self.shear_image(image, 0.2)], axis=0)
+                            [new_list, self.shear_image(image, kwargs['shear_param'])], axis=0)
                         new_list = np.concatenate(
-                            [new_list, self.translate_image(image, (1, 2))], axis=0)
+                            [new_list, self.translate_image(image, kwargs['translate_param'])], axis=0)
 
                     except NameError:
                         new_list = self._flip_image(image)
                         new_list = np.concatenate(
                             [new_list, self._rotate(image)], axis=0)
                         new_list = np.concatenate(
-                            [new_list, self.shear_image(image, 0.2)], axis=0)
+                            [new_list, self.shear_image(image, kwargs['shear_param'])], axis=0)
                         new_list = np.concatenate(
-                            [new_list, self.translate_image(image, (1, 2))], axis=0)
+                            [new_list, self.translate_image(image, kwargs['translate_param'])], axis=0)
 
         self.data = np.concatenate([self.data, new_list], axis=0)
 
