@@ -36,34 +36,6 @@ class Dataset_utility():
         self.y = np.array(self.y)
         # get the total training images
 
-    @property
-    def show_stat(self):
-        '''
-        compute the statistics of the training data
-        '''
-        stats = {}
-        sample_map = {}
-        for label in self.y:
-            if label in sample_map:
-                sample_map[label] += 1
-            else:
-                sample_map[label] = 1
-
-        counter = []
-        for key in sample_map:
-            counter.append(sample_map[key])
-
-        counter = np.array(counter)
-
-        stats = {'mean': np.mean(counter),
-                 'median': np.median(counter),
-                 'min': np.min(counter),
-                 'max': np.max(counter),
-                 'std': np.std(counter),
-                 }
-
-        return sample_map, stats
-
     def _getMinorMajorRatio(self, image):
         image = image.copy()
         # thresholded image
@@ -129,6 +101,34 @@ class Dataset_utility():
             self.data[c, 0:imageSize] = image.reshape(1, imageSize)
             self.data[c, imageSize] = axisratio
             self.data[c, imageSize+1] = self.y[c]
+
+    @property
+    def show_stat(self):
+        '''
+        compute the statistics of the training data
+        '''
+        stats = {}
+        sample_map = {}
+        for label in self.y:
+            if label in sample_map:
+                sample_map[label] += 1
+            else:
+                sample_map[label] = 1
+
+        counter = []
+        for key in sample_map:
+            counter.append(sample_map[key])
+
+        counter = np.array(counter)
+
+        stats = {'mean': np.mean(counter),
+                 'median': np.median(counter),
+                 'min': np.min(counter),
+                 'max': np.max(counter),
+                 'std': np.std(counter),
+                 }
+
+        return sample_map, stats
 
     def image_augmentation(self, **kwargs):
         '''
