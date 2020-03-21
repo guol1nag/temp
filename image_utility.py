@@ -81,8 +81,8 @@ class Dataset_utility():
         number_of_Images = len(self.train)
         num_rows = number_of_Images  # one row for each image in the training dataset
 
-        # We'll rescale the images to be 25x25
-        maxPixel = 25
+        # We'll rescale the images to be 75x75
+        maxPixel = 125 * 125
         imageSize = int(maxPixel * maxPixel)
         num_features = imageSize + 2  # for our ratio and label
 
