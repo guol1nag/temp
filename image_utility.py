@@ -37,7 +37,7 @@ class Dataset_utility():
         # get the total training images
 
     @property
-    def counter(self):
+    def show_stat(self):
         '''
         compute the statistics of the training data
         '''
