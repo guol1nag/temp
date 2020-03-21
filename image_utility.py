@@ -130,8 +130,11 @@ class Dataset_utility():
         '''
         pass
 
-    def image_augmentation(self):
+    def image_augmentation(self, mode):
         '''
+        To augment some categories of the dataset
+
+        Common method:
         rotation: random with angle between 0° and 360° (uniform)
         translation: random with shift between -10 and 10 pixels (uniform)
         rescaling: random with scale factor between 1/1.6 and 1.6 (log-uniform)
@@ -139,7 +142,12 @@ class Dataset_utility():
         shearing: random with angle between -20° and 20° (uniform)
         stretching: random with stretch factor between 1/1.3 and 1.3 (log-uniform)
         '''
-        pass
+
+        if mode == 'mean':
+            '''
+            label whose samples below the average number will be augmented 
+            '''
+
 
     def _flip_image(self, image):
         '''
@@ -188,3 +196,8 @@ class Dataset_utility():
         affine_tf = tf.AffineTransform(translation=Coe_translation)
 
         return np.append(tf.warp(img, inverse_map=affine_tf).ravel(), image.ravel()[25*25:])
+
+    def batcher(self, x, y, batch_size):
+        l = len(y)
+        for batch in range(0, l, batch_size):
+            yield (x[batch:min(batch + batch_size, l)], y[batch:min(batch + batch_size, l)])
