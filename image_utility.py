@@ -89,7 +89,6 @@ class Dataset_utility():
         # consisting of the pixel values and our metric
         self.data = np.zeros((num_rows, num_features), dtype=float)
 
-        print('start rescaling')
         # Navigate through the list of directories
         for c, image in enumerate(self.train):
             # image = imread(nameFileImage, as_grey=True)
@@ -102,13 +101,17 @@ class Dataset_utility():
             self.data[c, imageSize] = axisratio
             self.data[c, imageSize+1] = self.y[c]
 
+    @property
     def show_stat(self):
         '''
         compute the statistics of the training data
         '''
         stats = {}
         sample_map = {}
-        for label in self.y:
+        label_list = self.data[:, -1]
+
+        for label in label_list:
+            label = int(label)
             if label in sample_map:
                 sample_map[label] += 1
             else:
@@ -118,7 +121,7 @@ class Dataset_utility():
         for key in sample_map:
             counter.append(sample_map[key])
 
-        counter = np.array(counter)
+        counter = np.array(counter).astype('float')
 
         stats = {'mean': np.mean(counter),
                  'median': np.median(counter),
@@ -146,7 +149,7 @@ class Dataset_utility():
             kwargs['translate_param'] (1,2) -> left shift 1, up shift 2
         '''
 
-        sample_map, stats = self.show_stat()
+        sample_map, stats = self.show_stat
 
         # if mode == 'mean':
         if True:
