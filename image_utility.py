@@ -38,7 +38,7 @@ class Dataset_utility():
         self.y = np.array(self.y)
         # get the total training images
 
-    def _getMinorMajorRatio(self, image):
+    def _getMinorMajorRatio(self, image, mode='origin'):
         image = image.copy()
         # thresholded image
         imagethr = np.where(image > np.mean(image), 0., 1.0)
@@ -59,7 +59,16 @@ class Dataset_utility():
         if ((not maxregion is None) and (maxregion.major_axis_length != 0.0)):
             ratio = 0.0 if maxregion is None else maxregion.minor_axis_length * \
                 1.0 / maxregion.major_axis_length
-        return ratio
+
+        if mode == 'origin':
+            img = image
+        elif mode == 'thresholded':
+            img = imagethr
+        elif mode == 'dilated':
+            img = imdilated
+        elif mode == 'labeled':
+            img = label_list
+        return ratio, img
 
     def _getLargestRegion(self, props, labelmap, imagethres):
         regionmaxprop = None
@@ -97,11 +106,11 @@ class Dataset_utility():
         for c, image in enumerate(self.train):
             # image = imread(nameFileImage, as_grey=True)
             # files.append(nameFileImage)
-            axisratio = self._getMinorMajorRatio(image)
-            image = resize(image, (maxPixel, maxPixel))
+            axisratio, img = self._getMinorMajorRatio(image)
+            img = resize(img, (maxPixel, maxPixel))
 
             # Store the rescaled image pixels and the axis ratio
-            self.data[c, 0:imageSize] = image.reshape(1, imageSize)
+            self.data[c, 0:imageSize] = img.reshape(1, imageSize)
             self.data[c, imageSize] = axisratio
             self.data[c, imageSize+1] = self.y[c]
 
