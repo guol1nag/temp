@@ -301,8 +301,9 @@ class Dataset_utility():
             class_name = label
 
             # root/class_x/xxx.ext
+            if not os.path.exists(os.path.join(path, f'{class_name}')):
+                os.mkdir(os.path.join(path, f'{class_name}'))
 
-            os.mkdir(os.path.join(path, f'{class_name}'))
             file_name = os.path.join(path, f'{class_name}/sample{i}.npy')
 
             np.save(file=file_name, arr=img)
