@@ -227,6 +227,7 @@ class Dataset_utility():
             #                 [aug_list, self.translate_image(image, kwargs['translate_param_2']).reshape(1, -1)], axis=0)
 
         self.data = np.concatenate([self.data, aug_list], axis=0)
+        del aug_list
 
     def _flip_image(self, image):
         '''
@@ -304,7 +305,6 @@ class Dataset_utility():
 
                 image -> np matrix; (N_sample,self.pixel * self.pixel)
                 mum_label -> float, (N_sample,)
-
         '''
         images = self.data[:, :-2]
         num_labels = self.data[:, -1]
