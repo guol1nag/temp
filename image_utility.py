@@ -73,13 +73,13 @@ class Dataset_utility():
                 regionmaxprop = regionprop
         return regionmaxprop
 
-    def image_rescaling(self, pixel):
+    def image_rescaling(self, pixel_size):
         '''
         Returns:
             self.data [N_samples,N_pixels + ratio + label]; label -> float
         '''
 
-        self.pixel = pixel
+        self.pixel = pixel_size
 
         number_of_Images = len(self.train)
         num_rows = number_of_Images  # one row for each image in the training dataset
@@ -180,10 +180,8 @@ class Dataset_utility():
 
                     except NameError:
                         aug_list = self._flip_image(image).reshape(1, -1)
-
                         aug_list = np.concatenate(
                             [aug_list, self._rotate(image).reshape(1, -1)], axis=0)
-
                         aug_list = np.concatenate(
                             [aug_list, self._flip_image(aug_list[-1]).reshape(1, -1)], axis=0)
 
