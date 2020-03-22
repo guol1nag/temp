@@ -302,6 +302,7 @@ class Dataset_utility():
 
             # root/class_x/xxx.ext
 
+            os.mkdir(os.path.join(path, f'{class_name}'))
             file_name = os.path.join(path, f'{class_name}/sample{i}.npy')
 
             np.save(file=file_name, arr=img)
