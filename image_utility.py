@@ -18,6 +18,7 @@ from skimage.io import imread
 from skimage.transform import resize
 from skimage import transform as tf
 import os
+import torch
 
 
 class Dataset_utility():
@@ -272,6 +273,11 @@ class Dataset_utility():
         l = len(y)
         for batch in range(0, l, batch_size):
             yield (x[batch:min(batch + batch_size, l)], y[batch:min(batch + batch_size, l)])
+
+    @staticmethod
+    def npy_loader(path):
+        sample = torch.from_numpy(np.load(path))
+        return sample
 
     def save_npy(self, path):
         '''
