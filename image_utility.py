@@ -168,9 +168,11 @@ class Dataset_utility():
                 if image[-1] in aug_label:
                     try:
                         aug_list = np.concatenate(
-                            [aug_list, self._flip_image(image).reshape(1, -1)], axis=0)
-                        aug_list = np.concatenate(
                             [aug_list, self._rotate(image).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(aug_list[-1]).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(image).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
                             [aug_list, self.shear_image(image, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
@@ -178,8 +180,13 @@ class Dataset_utility():
 
                     except NameError:
                         aug_list = self._flip_image(image).reshape(1, -1)
+
                         aug_list = np.concatenate(
                             [aug_list, self._rotate(image).reshape(1, -1)], axis=0)
+
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(aug_list[-1]).reshape(1, -1)], axis=0)
+
                         aug_list = np.concatenate(
                             [aug_list, self.shear_image(image, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
