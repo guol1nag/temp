@@ -82,7 +82,7 @@ class Dataset_utility():
                 regionmaxprop = regionprop
         return regionmaxprop
 
-    def image_rescaling(self, pixel_size):
+    def image_rescaling(self, pixel_size, mode):
         '''
         Returns:
             self.data [N_samples,N_pixels + ratio + label]; label -> float
@@ -106,7 +106,7 @@ class Dataset_utility():
         for c, image in enumerate(self.train):
             # image = imread(nameFileImage, as_grey=True)
             # files.append(nameFileImage)
-            axisratio, img = self._getMinorMajorRatio(image)
+            axisratio, img = self._getMinorMajorRatio(image, mode)
             img = resize(img, (maxPixel, maxPixel))
 
             # Store the rescaled image pixels and the axis ratio
