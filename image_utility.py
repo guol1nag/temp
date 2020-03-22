@@ -304,5 +304,4 @@ class Dataset_utility():
 
             file_name = os.path.join(path, f'{class_name}/sample{i}.npy')
 
-            np.savetxt(fname=file_name, X=img, fmt='%.18e', delimiter=' ', newline='\n',
-                       header='', footer='', comments='# ', encoding=None)
+            np.save(file=file_name, arr=img)
