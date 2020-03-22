@@ -176,14 +176,14 @@ class Dataset_utility():
                         aug_list = np.concatenate(
                             [aug_list, self.translate_image(image, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
 
-                        # rotated = self._rotate(image).reshape(1, -1)
+                        rotated = self._rotate(image).reshape(1, -1)
 
-                        # aug_list = np.concatenate(
-                        #     [aug_list, self._flip_image(rotated).reshape(1, -1)], axis=0)
-                        # aug_list = np.concatenate(
-                        #     [aug_list, self.shear_image(rotated, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
-                        # aug_list = np.concatenate(
-                        #     [aug_list, self.translate_image(rotated, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(rotated).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.shear_image(rotated, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(rotated, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
 
                     except NameError:
                         aug_list = self._flip_image(image).reshape(1, -1)
@@ -194,14 +194,14 @@ class Dataset_utility():
                         aug_list = np.concatenate(
                             [aug_list, self.translate_image(image, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
 
-                        # rotated = self._rotate(image).reshape(1, -1)
+                        rotated = self._rotate(image).reshape(1, -1)
 
-                        # aug_list = np.concatenate(
-                        #     [aug_list, self._flip_image(rotated).reshape(1, -1)], axis=0)
-                        # aug_list = np.concatenate(
-                        #     [aug_list, self.shear_image(rotated, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
-                        # aug_list = np.concatenate(
-                        #     [aug_list, self.translate_image(rotated, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(rotated).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.shear_image(rotated, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(rotated, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
 
         elif mode == 2:
             '''
