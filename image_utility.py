@@ -20,6 +20,7 @@ from skimage import transform as tf
 import os
 import torch
 import matplotlib.pyplot as plt
+import matplotlib
 
 
 class Dataset_utility():
@@ -343,8 +344,10 @@ class Dataset_utility():
 
             np.save(file=file_name, arr=img)
 
-    def save_jpg(self, path):
+    def save_img(self, path):
         '''
+            save a np array to image form
+
             Args:
                 path: the file path you want to save, exclude file name
 
@@ -373,6 +376,6 @@ class Dataset_utility():
             if not os.path.exists(os.path.join(path, f'{class_name}')):
                 os.mkdir(os.path.join(path, f'{class_name}'))
 
-            file_name = os.path.join(path, f'{class_name}/sample{i}.jpg')
+            file_name = os.path.join(path, f'{class_name}/sample{i}.png')
 
-            plt.imsave(file_name, img, cmap='Greys')
+            matplotlib.image.imsave(file_name, img)
