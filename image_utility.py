@@ -278,7 +278,7 @@ class Dataset_utility():
             Args:
                 path: the file path you want to save, exclude file name
 
-                image -> np matrix; (N_sample,625)
+                image -> np matrix; (N_sample,self.pixel * self.pixel)
                 mum_label -> float, (N_sample,)
 
         '''
