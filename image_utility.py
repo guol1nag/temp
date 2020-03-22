@@ -50,6 +50,7 @@ class Dataset_utility():
         label_list = measure.label(imdilated)
         label_list = imagethr*label_list
         label_list = label_list.astype(int)
+        label = copy.deepcopy(label_list)
 
         region_list = measure.regionprops(label_list)
         maxregion = self._getLargestRegion(region_list, label_list, imagethr)
@@ -67,7 +68,7 @@ class Dataset_utility():
         elif mode == 'dilated':
             img = imdilated
         elif mode == 'labeled':
-            img = label_list
+            img = label
         return ratio, img
 
     def _getLargestRegion(self, props, labelmap, imagethres):
