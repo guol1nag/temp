@@ -25,7 +25,7 @@ class Dataset_utility():
     def __init__(self, train, label, label2num):
         '''
         Args:
-            train: a list of train samples, each element is a graph but could have different shape
+            train: a list of train samples, each element is a gracph but could have different shape
             label: a list of corresponding label sampless
             label2num: a map from label name to label number, (first number, second number) = (label category, label frequency)
         '''
@@ -170,48 +170,61 @@ class Dataset_utility():
                         aug_list = np.concatenate(
                             [aug_list, self._rotate(image).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
-                            [aug_list, self._flip_image(aug_list[-1]).reshape(1, -1)], axis=0)
-                        aug_list = np.concatenate(
                             [aug_list, self._flip_image(image).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
                             [aug_list, self.shear_image(image, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
                             [aug_list, self.translate_image(image, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
 
+                        rotated = self._rotate(image).reshape(1, -1)
+
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(rotated).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.shear_image(rotated, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(rotated, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
+
                     except NameError:
                         aug_list = self._flip_image(image).reshape(1, -1)
                         aug_list = np.concatenate(
                             [aug_list, self._rotate(image).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
-                            [aug_list, self._flip_image(aug_list[-1]).reshape(1, -1)], axis=0)
-
-                        aug_list = np.concatenate(
                             [aug_list, self.shear_image(image, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
                         aug_list = np.concatenate(
                             [aug_list, self.translate_image(image, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
+
+                        rotated = self._rotate(image).reshape(1, -1)
+
+                        aug_list = np.concatenate(
+                            [aug_list, self._flip_image(rotated).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.shear_image(rotated, kwargs['shear_param_1']).reshape(1, -1)], axis=0)
+                        aug_list = np.concatenate(
+                            [aug_list, self.translate_image(rotated, kwargs['translate_param_1']).reshape(1, -1)], axis=0)
 
         elif mode == 2:
             '''
             mode 2: only do shear and translation, according to the second set parameters
             '''
-            aug_label = [float(key) for key in sample_map if float(
-                sample_map[key]) <= float(stats['mean'])]
+            # aug_label = [float(key) for key in sample_map if float(
+            #     sample_map[key]) <= float(stats['mean'])]
 
-            for image in self.data:
-                if image[-1] in aug_label:
-                    try:
-                        aug_list = np.concatenate(
-                            [aug_list, self.shear_image(image, kwargs['shear_param_2']).reshape(1, -1)], axis=0)
-                        aug_list = np.concatenate(
-                            [aug_list, self.translate_image(image, kwargs['translate_param_2']).reshape(1, -1)], axis=0)
+            # for image in self.data:
+            #     if image[-1] in aug_label:
+            #         try:
+            #             aug_list = np.concatenate(
+            #                 [aug_list, self.shear_image(image, kwargs['shear_param_2']).reshape(1, -1)], axis=0)
+            #             aug_list = np.concatenate(
+            #                 [aug_list, self.translate_image(image, kwargs['translate_param_2']).reshape(1, -1)], axis=0)
 
-                    except NameError:
+            #         except NameError:
 
-                        aug_list = self.shear_image(
-                            image, kwargs['shear_param_2']).reshape(1, -1)
+            #             aug_list = self.shear_image(
+            #                 image, kwargs['shear_param_2']).reshape(1, -1)
 
-                        aug_list = np.concatenate(
-                            [aug_list, self.translate_image(image, kwargs['translate_param_2']).reshape(1, -1)], axis=0)
+            #             aug_list = np.concatenate(
+            #                 [aug_list, self.translate_image(image, kwargs['translate_param_2']).reshape(1, -1)], axis=0)
 
         self.data = np.concatenate([self.data, aug_list], axis=0)
 
