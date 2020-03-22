@@ -309,6 +309,40 @@ class Dataset_utility():
         sample = torch.from_numpy(np.load(path))
         return sample
 
+    def save_npy(self, path):
+        '''
+            Args:
+                path: the file path you want to save, exclude file name
+
+                image -> np matrix; (N_sample,self.pixel * self.pixel)
+                mum_label -> float, (N_sample,)
+        '''
+        images = self.data[:, :-2]
+        num_labels = self.data[:, -1]
+
+        for i, img in enumerate(images):
+            num_label = int(num_labels[i])
+
+            # get the class name
+            label = None
+            for key, value in self.label2num.items():
+                if value[0] == num_label:
+                    label = key
+                    break
+
+            if label == None:
+                raise ValueError('not exist')
+
+            class_name = label
+
+            # root/class_x/xxx.ext
+            if not os.path.exists(os.path.join(path, f'{class_name}')):
+                os.mkdir(os.path.join(path, f'{class_name}'))
+
+            file_name = os.path.join(path, f'{class_name}/sample{i}.npy')
+
+            np.save(file=file_name, arr=img)
+
     def save_jpg(self, path):
         '''
             Args:
