@@ -309,7 +309,7 @@ class Dataset_utility():
         sample = torch.from_numpy(np.load(path))
         return sample
 
-    def save_npy(self, path):
+    def save_jpg(self, path):
         '''
             Args:
                 path: the file path you want to save, exclude file name
