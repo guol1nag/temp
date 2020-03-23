@@ -378,4 +378,40 @@ class Dataset_utility():
 
             file_name = os.path.join(path, f'{class_name}/sample{i}.png')
 
-            matplotlib.image.imsave(file_name, img)
+            matplotlib.image.imsave(file_name, img.reshape(25, 25))
+
+    def save_img2(self, path):
+        '''
+            save a np array to image form
+
+            Args:
+                path: the file path you want to save, exclude file name
+
+                image -> np matrix; (N_sample,self.pixel * self.pixel)
+                mum_label -> float, (N_sample,)
+        '''
+        images = self.data[:, :-2]
+        num_labels = self.data[:, -1]
+
+        for i, img in enumerate(images):
+            num_label = int(num_labels[i])
+
+            # get the class name
+            label = None
+            for key, value in self.label2num.items():
+                if value[0] == num_label:
+                    label = key
+                    break
+
+            if label == None:
+                raise ValueError('not exist')
+
+            class_name = label
+
+            # root/class_x/xxx.ext
+            if not os.path.exists(os.path.join(path, f'{class_name}')):
+                os.mkdir(os.path.join(path, f'{class_name}'))
+
+            file_name = os.path.join(path, f'{class_name}/sample{i}.png')
+
+            plt.savefig(file_name, img)
